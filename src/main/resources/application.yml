@@ -1,0 +1,21 @@
+server:
+  port: 8181
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        validator:
+          apply_to_ddl: false
+
+  datasource:
+    url: jdbc:mysql://106.55.30.20:3306/global_sourcing?user=root&password=Hots
+    hikari:
+      max-lifetime: 0
+      minimum-idle: 3
+      maximum-pool-size: 10
+
+  jackson:
+    time-zone: GMT+8

@@ -1,0 +1,57 @@
+POST {{url_prefix}}/saleOrder/insert
+Content-Type: application/json
+
+{
+  "address": "殷鑫 15858780802 湖南省长沙市天心区中南大学铁道学院",
+  "items": [
+    {
+      "product": {
+        "id": 1
+      },
+      "salePrice": 2500,
+      "quantity": 0
+    },
+    {
+      "product": {
+        "id": 2
+      },
+      "salePrice": 400,
+      "quantity": 7
+    }
+  ]
+}
+
+###
+
+DELETE {{url_prefix}}/saleOrder/deleteItem?itemId=1
+Accept: application/json
+
+###
+
+DELETE {{url_prefix}}/saleOrder/delete?id=1
+Accept: application/json
+
+###
+
+GET {{url_prefix}}/saleOrder/isSaleOrderDeliverable?id=1
+Accept: application/json
+
+###
+
+PUT {{url_prefix}}/saleOrder/deliver?id=1&expressCompany=SF&expressNumber=456789123
+Accept: application/json
+
+###
+
+PUT {{url_prefix}}/saleOrder/deliverItem?itemId=1&quantity=2&expressNumber=963852741852
+Accept: application/json
+
+###
+
+GET {{url_prefix}}/saleOrder/findAll
+Accept: application/json
+
+###
+
+GET {{url_prefix}}/saleOrder/search?keyword=殷鑫
+Accept: application/json

@@ -1,0 +1,28 @@
+POST {{url_prefix}}/login?username=admin&password=admin
+Accept: application/json
+
+###
+POST {{url_prefix}}/login?username=18570771841&password=123Hots
+Accept: application/json
+
+###
+
+POST {{url_prefix}}/logout
+Accept: application/json
+
+###
+
+POST {{url_prefix}}/user/insert
+Content-Type: application/json
+
+{
+  "username": "18570771841",
+  "password": "123Hots",
+  "name": "赵六",
+  "role": "TRANSPORTER"
+}
+
+###
+
+GET {{url_prefix}}/user/findByUsername?username=admin
+Accept: application/json

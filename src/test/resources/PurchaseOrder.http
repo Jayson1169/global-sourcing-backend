@@ -1,0 +1,87 @@
+GET {{url_prefix}}/purchaseOrder/getPhoto?id=7
+Accept: application/json
+
+###
+
+GET {{url_prefix}}/purchaseOrder/findAll?buyerId=23
+Accept: application/json
+###
+
+GET {{url_prefix}}/purchaseOrder/findAllByWarehouseKeeper?warehouseKeeperId=36
+Accept: application/json
+
+###
+
+PUT {{url_prefix}}/purchaseOrder/assign?purchaseOrderId=3&buyerId=35&quantity=4
+Accept: application/json
+
+###
+
+PUT {{url_prefix}}/purchaseOrder/uploadPurchaseInfo
+Content-Type: application/json
+
+{
+  "id": 3,
+  "createTime": "2022-01-13 17:14:36",
+  "updateTime": "2022-01-13 17:17:24",
+  "buyer": {
+    "id": 35,
+    "createTime": "2022-01-13 17:16:07",
+    "updateTime": "2022-01-13 17:16:07",
+    "username": "18570771839",
+    "password": "$2a$10$ot5As.HBxxDlWkRLP5murOmHlpclgkEm2hpbdSKrwb7YVEw6DYxW2",
+    "name": "张三",
+    "role": "BUYER",
+    "phoneNumber": null
+  },
+  "status": "READY",
+  "invoiceDate": "2022-01-13",
+  "product": {
+    "id": 1,
+    "createTime": "2022-01-13 12:54:28",
+    "updateTime": "2022-01-13 12:54:28",
+    "name": "曼秀雷敦男士控油抗痘洁面乳",
+    "barcode": "6917246004355",
+    "brand": "曼秀雷敦",
+    "specification": "150ml",
+    "inventory": {
+      "id": 1,
+      "createTime": "2022-01-13 12:54:28",
+      "updateTime": "2022-01-13 12:54:28",
+      "warehouseInventory": 10,
+      "hubInventory": 10,
+      "midwayInventory": 0
+    },
+    "remark": null,
+    "price": 3200,
+    "customsInfo": {
+      "id": 1,
+      "createTime": "2022-01-13 12:54:28",
+      "updateTime": "2022-01-13 12:54:28",
+      "hsCode": "42022900",
+      "materialBeschaffenheit": "This version is in a nano size in classic calfskin.Shoulder, crossbody, top handle or clutch carry. Detachable chain. shoulder strap. Zip closure with calfskin pull. Customisable with strap and personalised charms. Herringbone cotton canvas lining Embossed Anagram",
+      "brandArticleNo": "A510U98X01",
+      "brand": "LOEWE",
+      "articleName": "Nano Puzzle bag in classic calfskin",
+      "unitPrice": 54096
+    }
+  },
+  "purchasePrice": 2300,
+  "quantity": 4,
+  "purchasedQuantity": 4,
+  "warehousedQuantity": 0,
+  "rejectReason": null,
+  "warehouseKeeper": null,
+  "photo": "data",
+  "invoice": "data"
+}
+
+###
+
+PUT {{url_prefix}}/purchaseOrder/confirmAndAssignToWarehouseKeeper?id=3&warehouseKeeperId=36
+Accept: application/json
+
+###
+
+PUT {{url_prefix}}/purchaseOrder/putIntoWarehouse?id=3&quantity=4
+Accept: application/json
