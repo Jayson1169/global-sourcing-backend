@@ -57,7 +57,7 @@ class ExpressOrderController(private val expressOrderService: ExpressOrderServic
     }
 
     @GetMapping("/findAll")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'WAREHOUSE_KEEPER', 'TRANSPORTER')")
     fun findAll(
         @RequestParam(required = false) status: Status,
         @RequestParam(defaultValue = "0") page: Int,

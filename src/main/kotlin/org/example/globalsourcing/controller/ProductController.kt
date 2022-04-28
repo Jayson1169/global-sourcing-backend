@@ -37,10 +37,10 @@ class ProductController(private val productService: ProductService) {
 
     @GetMapping("/findAll")
     fun findAll(
-        @RequestParam(defaultValue = "0") page: Int?,
-        @RequestParam(defaultValue = DEFAULT_PAGE_SIZE.toString()) size: Int?
+        @RequestParam(defaultValue = "0") page: Int,
+        @RequestParam(defaultValue = DEFAULT_PAGE_SIZE.toString()) size: Int
     ): ResponseData<Page<Product>> {
-        val products = productService.findAll(page!!, size!!)
+        val products = productService.findAll(page, size)
         return ResponseData.success(products)
     }
 

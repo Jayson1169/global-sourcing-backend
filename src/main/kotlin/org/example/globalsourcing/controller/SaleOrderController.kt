@@ -119,10 +119,10 @@ class SaleOrderController(private val saleOrderService: SaleOrderService) {
     @PreAuthorize("hasAnyRole('ADMIN', 'TRANSPORTER', 'SALESPERSON')")
     fun search(
         @NotBlank(message = "关键词不能为空") keyword: String?,
-        @RequestParam(defaultValue = "0") page: Int?,
-        @RequestParam(defaultValue = DEFAULT_PAGE_SIZE.toString()) size: Int?
+        @RequestParam(defaultValue = "0") page: Int,
+        @RequestParam(defaultValue = DEFAULT_PAGE_SIZE.toString()) size: Int
     ): ResponseData<Page<SaleOrder>> {
-        val saleOrders = saleOrderService.search(keyword!!, page!!, size!!)
+        val saleOrders = saleOrderService.search(keyword!!, page, size)
         return ResponseData.success(saleOrders)
     }
 }
