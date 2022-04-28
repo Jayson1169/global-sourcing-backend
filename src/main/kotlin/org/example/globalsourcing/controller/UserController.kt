@@ -49,15 +49,16 @@ class UserController(private val userService: UserService) {
 
     @GetMapping("/findAll")
     fun findAll(
-        @RequestParam(defaultValue = "0") page: Int?,
-        @RequestParam(defaultValue = DEFAULT_PAGE_SIZE.toString()) size: Int?
+        @RequestParam(required = false) role: User.Role?,
+        @RequestParam(defaultValue = "0") page: Int,
+        @RequestParam(defaultValue = DEFAULT_PAGE_SIZE.toString()) size: Int
     ): ResponseData<Page<User>> {
-        val users = userService.findAll(page!!, size!!)
+        val users = userService.findAll(role, page, size)
         return ResponseData.success(users)
     }
 
     @GetMapping("/findByUsername")
-    fun findByUsername(@NotBlank(message = "账号不能为空") username: String?): ResponseData<User?>? {
+    fun findByUsername(@NotBlank(message = "账号不能为空") username: String?): ResponseData<User> {
         val user = userService.findByUsername(username!!)
         return ResponseData.success(user)
     }
@@ -65,10 +66,10 @@ class UserController(private val userService: UserService) {
     @GetMapping("/search")
     fun search(
         @NotBlank(message = "关键词不能为空") keyword: String?,
-        @RequestParam(defaultValue = "0") page: Int?,
-        @RequestParam(defaultValue = DEFAULT_PAGE_SIZE.toString()) size: Int?
+        @RequestParam(defaultValue = "0") page: Int,
+        @RequestParam(defaultValue = DEFAULT_PAGE_SIZE.toString()) size: Int
     ): ResponseData<Page<User>> {
-        val users = userService.search(keyword!!, page!!, size!!)
+        val users = userService.search(keyword!!, page, size)
         return ResponseData.success(users)
     }
 }

@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull
 
 @RestController
 @RequestMapping("/product")
-@PreAuthorize("hasAnyRole('ADMIN', 'SALESPERSON', 'BUYER')")
+@PreAuthorize("hasAnyRole('ADMIN', 'SALESPERSON', 'BUYER', 'WAREHOUSE_KEEPER')")
 @Validated
 class ProductController(private val productService: ProductService) {
 
@@ -53,10 +53,10 @@ class ProductController(private val productService: ProductService) {
     @GetMapping("/search")
     fun search(
         @NotBlank(message = "关键词不能为空") keyword: String?,
-        @RequestParam(defaultValue = "0") page: Int?,
-        @RequestParam(defaultValue = DEFAULT_PAGE_SIZE.toString()) size: Int?
+        @RequestParam(defaultValue = "0") page: Int,
+        @RequestParam(defaultValue = DEFAULT_PAGE_SIZE.toString()) size: Int
     ): ResponseData<Page<Product>> {
-        val products = productService.search(keyword!!, page!!, size!!)
+        val products = productService.search(keyword!!, page, size)
         return ResponseData.success(products)
     }
 
@@ -68,7 +68,7 @@ class ProductController(private val productService: ProductService) {
 
     @GetMapping("/getImage")
     @PreAuthorize("hasRole('USER')")
-    fun getImage(@NotNull(message = "ID不能为空") id: Long?): ResponseData<String?>? {
+    fun getImage(@NotNull(message = "ID不能为空") id: Long?): ResponseData<String> {
         val image = productService.getImage(id!!)
         return ResponseData.success(image)
     }

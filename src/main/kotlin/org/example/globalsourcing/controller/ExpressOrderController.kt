@@ -60,10 +60,10 @@ class ExpressOrderController(private val expressOrderService: ExpressOrderServic
     @PreAuthorize("hasRole('ADMIN')")
     fun findAll(
         @RequestParam(required = false) status: Status,
-        @RequestParam(defaultValue = "0") page: Int?,
-        @RequestParam(defaultValue = DEFAULT_PAGE_SIZE.toString()) size: Int?
+        @RequestParam(defaultValue = "0") page: Int,
+        @RequestParam(defaultValue = DEFAULT_PAGE_SIZE.toString()) size: Int
     ): ResponseData<Page<ExpressOrder>> {
-        val expressOrders = expressOrderService.findAll(status, page!!, size!!)
+        val expressOrders = expressOrderService.findAll(status, page, size)
         return ResponseData.success(expressOrders)
     }
 }

@@ -26,3 +26,13 @@ Content-Type: application/json
 
 GET {{url_prefix}}/user/findByUsername?username=admin
 Accept: application/json
+
+###
+
+GET {{url_prefix}}/user/findAll?role=BUYER
+Accept: application/json
+
+###
+
+DELETE {{url_prefix}}/user/delete?id=5
+Accept: application/json

@@ -40,12 +40,12 @@ abstract class BaseEntity {
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (other !is BaseEntity || other.javaClass != javaClass) return false
+        if (other !is BaseEntity || other::class != this::class) return false
 
         return id == other.id
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(javaClass, id)
+        return Objects.hash(this::class, id)
     }
 }

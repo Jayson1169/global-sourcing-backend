@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
+import javax.persistence.criteria.Predicate
 import javax.transaction.Transactional
 
 @Service
@@ -76,24 +77,31 @@ class UserService(
     }
 
     /**
-     * 获取所有用户。
+     * 查询用户，可选条件：用户角色 [role]。
      */
-    fun findAll(page: Int, size: Int): Page<User> {
-        return userRepository.findAll(PageRequest.of(page, size, SORT))
+    fun findAll(role: User.Role?, page: Int, size: Int): Page<User> {
+        return userRepository.findAll(
+            { root, _, criteriaBuilder ->
+                val predicates = mutableListOf<Predicate>()
+                role?.let { predicates.add(criteriaBuilder.equal(root.get<User.Role>("role"), it)) }
+
+                criteriaBuilder.and(*predicates.toTypedArray())
+            }, PageRequest.of(page, size, SORT)
+        )
     }
 
     /**
      * 依据账号获取指定用户。
      */
     fun findByUsername(username: String): User {
-        return userRepository.findByUsername(username) ?: throw ServiceException("不存在账号为'$username'的用户！")
+        return userRepository.findByUsername(username) ?: throw ServiceException("不存在账号为'${username}'的用户！")
     }
 
     /**
      * 按账号或姓名搜索用户。
      */
     fun search(keyword: String, page: Int, size: Int): Page<User> {
-        val pattern = "%$keyword%"
+        val pattern = "%${keyword}%"
         return userRepository.findAll(
             { root, _, criteriaBuilder ->
                 criteriaBuilder.or(

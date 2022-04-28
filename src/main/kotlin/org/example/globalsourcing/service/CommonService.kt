@@ -23,48 +23,42 @@ class CommonService(
     /**
      * 依据ID查找指定用户，并核验其角色。
      */
-    internal fun findUserAndCheckRole(id: Long, role: User.Role): User {
-        return userRepository.findById(id)
+    internal fun findUserAndCheckRole(id: Long, role: User.Role): User =
+        userRepository.findById(id)
             .filter { it.role == role }
             .orElseThrow { ServiceException("ID为'${id}'的用户不存在或不是${role.description}！") }
-    }
 
     /**
      * 依据ID查找指定采购单并核验状态是否在预期状态列表中。
      */
-    internal fun findPurchaseOrderAndCheckStatus(id: Long, vararg statuses: PurchaseOrder.Status): PurchaseOrder {
-        return purchaseOrderRepository.findById(id)
+    internal fun findPurchaseOrderAndCheckStatus(id: Long, vararg statuses: PurchaseOrder.Status): PurchaseOrder =
+        purchaseOrderRepository.findById(id)
             .filter { statuses.isEmpty() || ArrayUtils.contains(statuses, it.status) }
             .orElseThrow { ServiceException("ID为'${id}'的采购单不存在或状态异常！") }
-    }
 
     /**
      * 依据ID查找指定销售单。
      */
-    internal fun findSaleOrder(id: Long): SaleOrder {
-        return saleOrderRepository.findById(id).orElseThrow { ServiceException("ID为'${id}'的销售单不存在！") }
-    }
+    internal fun findSaleOrder(id: Long): SaleOrder =
+        saleOrderRepository.findById(id).orElseThrow { ServiceException("ID为'${id}'的销售单不存在！") }
 
     /**
      * 依据ID查找指定销售单项目。
      */
-    internal fun findSaleOrderItem(id: Long): SaleOrderItem {
-        return saleOrderItemRepository.findById(id).orElseThrow { ServiceException("ID为'${id}'的销售单项目不存在！") }
-    }
+    internal fun findSaleOrderItem(id: Long): SaleOrderItem =
+        saleOrderItemRepository.findById(id).orElseThrow { ServiceException("ID为'${id}'的销售单项目不存在！") }
 
     /**
      * 依据ID查找指定商品。
      */
-    internal fun findProduct(id: Long): Product {
-        return productRepository.findById(id).orElseThrow { ServiceException("ID为'${id}'的商品不存在！") }
-    }
+    internal fun findProduct(id: Long): Product =
+        productRepository.findById(id).orElseThrow { ServiceException("ID为'${id}'的商品不存在！") }
 
     /**
      * 依据ID查找指定物流单并核验状态是否在预期状态列表中。
      */
-    internal fun findExpressOrderAndCheckStatus(id: Long, vararg statuses: ExpressOrder.Status): ExpressOrder {
-        return expressOrderRepository.findById(id)
+    internal fun findExpressOrderAndCheckStatus(id: Long, vararg statuses: ExpressOrder.Status): ExpressOrder =
+        expressOrderRepository.findById(id)
             .filter { statuses.isEmpty() || ArrayUtils.contains(statuses, it.status) }
             .orElseThrow { ServiceException("ID为'${id}'的物流单不存在或状态异常！") }
-    }
 }

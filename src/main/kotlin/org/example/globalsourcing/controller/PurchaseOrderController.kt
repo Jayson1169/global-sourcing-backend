@@ -109,15 +109,15 @@ class PurchaseOrderController(private val purchaseOrderService: PurchaseOrderSer
     }
 
     @GetMapping("/findAll")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'BUYER', 'WAREHOUSE_KEEPER')")
     fun findAll(
         @RequestParam(required = false) buyerId: Long?,
         @RequestParam(required = false) warehouseKeeperId: Long?,
         @RequestParam(required = false) status: Status?,
-        @RequestParam(defaultValue = "0") page: Int?,
-        @RequestParam(defaultValue = DEFAULT_PAGE_SIZE.toString()) size: Int?
+        @RequestParam(defaultValue = "0") page: Int,
+        @RequestParam(defaultValue = DEFAULT_PAGE_SIZE.toString()) size: Int
     ): ResponseData<Page<PurchaseOrder>> {
-        val purchaseOrders = purchaseOrderService.findAll(buyerId, warehouseKeeperId, status, page!!, size!!)
+        val purchaseOrders = purchaseOrderService.findAll(buyerId, warehouseKeeperId, status, page, size)
         return ResponseData.success(purchaseOrders)
     }
 

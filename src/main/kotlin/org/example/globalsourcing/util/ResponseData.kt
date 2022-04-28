@@ -9,15 +9,11 @@ data class ResponseData<T>(
         /**
          * 构造请求成功时的响应数据。
          */
-        fun <T> success(data: T?): ResponseData<T> {
-            return ResponseData(200, "成功", data)
-        }
+        fun <T> success(data: T?): ResponseData<T> = ResponseData(200, "成功", data)
 
         /**
          * 构造请求失败或异常时的响应数据。
          */
-        fun error(status: Int, message: String): ResponseData<Any> {
-            return ResponseData(status, message, null)
-        }
+        fun error(status: Int, message: String): ResponseData<Any> = ResponseData(status, message, null)
     }
 }

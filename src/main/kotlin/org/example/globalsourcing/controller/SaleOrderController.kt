@@ -108,10 +108,10 @@ class SaleOrderController(private val saleOrderService: SaleOrderService) {
     fun findAll(
         @RequestParam(required = false) salespersonId: Long?,
         @RequestParam(required = false) delivered: Boolean?,
-        @RequestParam(defaultValue = "0") page: Int?,
-        @RequestParam(defaultValue = DEFAULT_PAGE_SIZE.toString()) size: Int?
+        @RequestParam(defaultValue = "0") page: Int,
+        @RequestParam(defaultValue = DEFAULT_PAGE_SIZE.toString()) size: Int
     ): ResponseData<Page<SaleOrder>> {
-        val saleOrders = saleOrderService.findAll(salespersonId, delivered, page!!, size!!)
+        val saleOrders = saleOrderService.findAll(salespersonId, delivered, page, size)
         return ResponseData.success(saleOrders)
     }
 

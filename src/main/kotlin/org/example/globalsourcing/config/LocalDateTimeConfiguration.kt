@@ -20,18 +20,16 @@ import java.time.format.DateTimeFormatter
 @Configuration
 class LocalDateTimeConfiguration {
     @Bean
-    fun customizeLocalDateTimeFormat(): Jackson2ObjectMapperBuilderCustomizer {
-        return Jackson2ObjectMapperBuilderCustomizer {
-            val dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-            val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-            val timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss")
+    fun customizeLocalDateTimeFormat(): Jackson2ObjectMapperBuilderCustomizer = Jackson2ObjectMapperBuilderCustomizer {
+        val dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+        val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        val timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss")
 
-            it.serializerByType(LocalDateTime::class.java, LocalDateTimeSerializer(dateTimeFormatter))
-            it.deserializerByType(LocalDateTime::class.java, LocalDateTimeDeserializer(dateTimeFormatter))
-            it.serializerByType(LocalDate::class.java, LocalDateSerializer(dateFormatter))
-            it.deserializerByType(LocalDate::class.java, LocalDateDeserializer(dateFormatter))
-            it.serializerByType(LocalTime::class.java, LocalTimeSerializer(timeFormatter))
-            it.deserializerByType(LocalTime::class.java, LocalTimeDeserializer(timeFormatter))
-        }
+        it.serializerByType(LocalDateTime::class.java, LocalDateTimeSerializer(dateTimeFormatter))
+        it.deserializerByType(LocalDateTime::class.java, LocalDateTimeDeserializer(dateTimeFormatter))
+        it.serializerByType(LocalDate::class.java, LocalDateSerializer(dateFormatter))
+        it.deserializerByType(LocalDate::class.java, LocalDateDeserializer(dateFormatter))
+        it.serializerByType(LocalTime::class.java, LocalTimeSerializer(timeFormatter))
+        it.deserializerByType(LocalTime::class.java, LocalTimeDeserializer(timeFormatter))
     }
 }
