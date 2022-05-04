@@ -8,6 +8,7 @@ import org.hibernate.annotations.TypeDef
 import javax.persistence.*
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Positive
+import javax.validation.constraints.PositiveOrZero
 
 @Entity
 @TypeDef(name = "json", typeClass = JsonStringType::class)
@@ -45,17 +46,10 @@ class SaleOrderItem : BaseEntity() {
     /**
      * 已发货数量。
      */
-    @Positive(message = "已发货数量不能为负")
+    @PositiveOrZero(message = "已发货数量不能为负")
     @Column(nullable = false)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     var deliveredQuantity: Int = 0
-
-    /**
-     * 是否已完成发货。
-     */
-    @Column(nullable = false)
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    var delivered: Boolean = false
 
     /**
      * 物流信息集合。
@@ -64,6 +58,12 @@ class SaleOrderItem : BaseEntity() {
     @Type(type = "json")
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     val expresses: MutableList<Express> = mutableListOf()
+
+    /**
+     * 是否已完成发货。
+     */
+    val delivered: Boolean
+        get() = quantity == deliveredQuantity
 
     data class Express(val expressCompany: String, val expressNumber: String)
 

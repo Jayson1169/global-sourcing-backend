@@ -18,6 +18,11 @@ class ProductService(
 ) {
 
     /**
+     * 查询时的排序依据。
+     */
+    private val sort: Sort = Sort.by(Sort.Direction.DESC, "updateTime")
+
+    /**
      * 新增商品基本信息，要求商品条码不能重复。
      */
     fun insert(product: Product): Product {
@@ -54,7 +59,7 @@ class ProductService(
      * 获取所有商品。
      */
     fun findAll(page: Int, size: Int): Page<Product> {
-        return productRepository.findAll(PageRequest.of(page, size, SORT))
+        return productRepository.findAll(PageRequest.of(page, size, sort))
     }
 
     /**
@@ -76,7 +81,7 @@ class ProductService(
                     criteriaBuilder.like(root.get("brand"), pattern),
                     criteriaBuilder.like(root.get("specification"), pattern)
                 )
-            }, PageRequest.of(page, size, SORT)
+            }, PageRequest.of(page, size, sort)
         )
     }
 
@@ -98,12 +103,5 @@ class ProductService(
     fun getImage(id: Long): String {
         val product = commonService.findProduct(id)
         return product.image!!
-    }
-
-    companion object {
-        /**
-         * 查询时的排序依据。
-         */
-        private val SORT: Sort = Sort.by(Sort.Direction.DESC, "updateTime")
     }
 }

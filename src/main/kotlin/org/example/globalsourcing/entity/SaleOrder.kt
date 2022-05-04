@@ -36,13 +36,6 @@ class SaleOrder : BaseEntity() {
     var remark: String? = null
 
     /**
-     * 是否已完成发货。
-     */
-    @Column(nullable = false)
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    var delivered: Boolean = false
-
-    /**
      * 销售单项目。
      */
     @Valid
@@ -50,9 +43,16 @@ class SaleOrder : BaseEntity() {
     val items: MutableList<SaleOrderItem> = mutableListOf()
 
     /**
-     * 计算销售单商品总销售价。
+     * 是否已完成发货。
      */
-    fun totalPrice(): Int = items.sumOf { it.quantity * it.salePrice }
+    val delivered: Boolean
+        get() = items.all { it.delivered }
+
+    /**
+     * 销售单商品总销售价。
+     */
+    val totalPrice: Int
+        get() = items.sumOf { it.quantity * it.salePrice }
 
     override fun toString(): String = "SaleOrder(" +
             "salesperson=$salesperson, " +

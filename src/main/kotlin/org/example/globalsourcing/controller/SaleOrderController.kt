@@ -98,7 +98,7 @@ class SaleOrderController(private val saleOrderService: SaleOrderService) {
         @Size(max = VARCHAR_MAX_SIZE, message = "物流公司长度不能超过{max}个字符") expressCompany: String?,
         @NotBlank(message = "物流单号不能为空")
         @Pattern(regexp = EXPRESS_NUMBER_PATTERN, message = "物流单号格式错误") expressNumber: String?
-    ): ResponseData<SaleOrder> {
+    ): ResponseData<SaleOrderItem> {
         val saleOrder = saleOrderService.deliverItem(itemId!!, quantity!!, expressCompany!!, expressNumber!!)
         return ResponseData.success(saleOrder)
     }

@@ -1,6 +1,6 @@
 package org.example.globalsourcing.util
 
-data class ResponseData<T>(
+data class ResponseData<out T>(
     val status: Int,
     val message: String,
     val data: T?
@@ -14,6 +14,6 @@ data class ResponseData<T>(
         /**
          * 构造请求失败或异常时的响应数据。
          */
-        fun error(status: Int, message: String): ResponseData<Any> = ResponseData(status, message, null)
+        fun error(status: Int, message: String): ResponseData<Nothing> = ResponseData(status, message, null)
     }
 }

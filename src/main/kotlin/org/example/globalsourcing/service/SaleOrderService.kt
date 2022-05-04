@@ -25,6 +25,11 @@ class SaleOrderService(
 ) {
 
     /**
+     * 查询时的排序依据。
+     */
+    private val sort: Sort = Sort.by(Sort.Direction.DESC, "updateTime")
+
+    /**
      * 新增销售单。
      */
     fun insert(saleOrder: SaleOrder): SaleOrder {
@@ -113,14 +118,12 @@ class SaleOrderService(
             productRepository.save(product)
             item.deliveredQuantity = item.quantity
             item.expresses.add(Express(expressCompany, expressNumber))
-            item.delivered = true
         }
 
-        saleOrder.delivered = true
         return saleOrderRepository.save(saleOrder)
     }
 
-    fun deliverItem(itemId: Long, quantity: Int, expressCompany: String, expressNumber: String): SaleOrder {
+    fun deliverItem(itemId: Long, quantity: Int, expressCompany: String, expressNumber: String): SaleOrderItem {
         val item: SaleOrderItem = saleOrderItemRepository.findById(itemId)
             .filter { !it.delivered }
             .orElseThrow { ServiceException("id为'${itemId}'的销售单项目不存在或已完成发货！") }
@@ -143,16 +146,8 @@ class SaleOrderService(
 
         item.deliveredQuantity = deliveredQuantity
         item.expresses.add(Express(expressCompany, expressNumber))
-        item.delivered = deliveredQuantity == item.quantity
-        saleOrderItemRepository.save(item)
 
-        var saleOrder = saleOrderRepository.findById(item.saleOrder.id).orElseThrow()
-        if (saleOrder.items.all { it.delivered }) {
-            saleOrder.delivered = true
-            saleOrder = saleOrderRepository.save(saleOrder)
-        }
-
-        return saleOrder
+        return saleOrderItemRepository.save(item)
     }
 
     /**
@@ -168,7 +163,7 @@ class SaleOrderService(
                 delivered?.let { predicates.add(criteriaBuilder.equal(root.get<Boolean>("delivered"), it)) }
 
                 criteriaBuilder.and(*predicates.toTypedArray())
-            }, PageRequest.of(page, size, SORT)
+            }, PageRequest.of(page, size, sort)
         )
     }
 
@@ -183,14 +178,7 @@ class SaleOrderService(
                     criteriaBuilder.like(root.get("address"), pattern),
                     criteriaBuilder.like(root.get("remark"), pattern)
                 )
-            }, PageRequest.of(page, size, SORT)
+            }, PageRequest.of(page, size, sort)
         )
-    }
-
-    companion object {
-        /**
-         * 查询时的排序依据。
-         */
-        private val SORT: Sort = Sort.by(Sort.Direction.DESC, "updateTime")
     }
 }

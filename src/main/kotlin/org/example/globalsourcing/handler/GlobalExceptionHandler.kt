@@ -19,7 +19,7 @@ class GlobalExceptionHandler {
      */
     @ExceptionHandler(MethodArgumentNotValidException::class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    fun handleMethodArgumentNotValidException(e: MethodArgumentNotValidException): ResponseData<Any> {
+    fun handleMethodArgumentNotValidException(e: MethodArgumentNotValidException): ResponseData<Nothing> {
         val message = e.bindingResult.fieldErrors.joinToString { "${it.field}: ${it.defaultMessage}" }
         return ResponseData.error(400, "请求参数异常: {${message}}")
     }
@@ -29,7 +29,7 @@ class GlobalExceptionHandler {
      */
     @ExceptionHandler(ConstraintViolationException::class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    fun handleConstraintViolationException(e: ConstraintViolationException): ResponseData<Any> {
+    fun handleConstraintViolationException(e: ConstraintViolationException): ResponseData<Nothing> {
         val message = e.constraintViolations.joinToString { "${it.propertyPath}: ${it.message}" }
         return ResponseData.error(400, "请求参数异常: {${message}}")
     }
@@ -39,7 +39,7 @@ class GlobalExceptionHandler {
      */
     @ExceptionHandler(IllegalArgumentException::class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    fun handleIllegalArgumentException(e: IllegalArgumentException): ResponseData<Any> {
+    fun handleIllegalArgumentException(e: IllegalArgumentException): ResponseData<Nothing> {
         return ResponseData.error(400, e.message ?: "")
     }
 
@@ -47,7 +47,7 @@ class GlobalExceptionHandler {
      * 服务层异常处理。
      */
     @ExceptionHandler(ServiceException::class)
-    fun handleServiceException(e: ServiceException): ResponseData<Any> {
-        return ResponseData.error(300, e.message)
+    fun handleServiceException(e: ServiceException): ResponseData<Nothing> {
+        return ResponseData.error(300, e.message ?: "")
     }
 }

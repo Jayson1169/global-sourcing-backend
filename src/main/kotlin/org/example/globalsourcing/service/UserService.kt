@@ -21,6 +21,11 @@ class UserService(
     private val passwordEncoder: PasswordEncoder
 ) : UserDetailsService {
 
+    /**
+     * 查询时的排序依据。
+     */
+    private val sort: Sort = Sort.by(Sort.Direction.ASC, "name", "role")
+
     override fun loadUserByUsername(username: String): UserDetails {
         val user = userRepository.findByUsername(username) ?: throw UsernameNotFoundException("用户'${username}'不存在！")
         val authorities = user.authorities
@@ -86,7 +91,7 @@ class UserService(
                 role?.let { predicates.add(criteriaBuilder.equal(root.get<User.Role>("role"), it)) }
 
                 criteriaBuilder.and(*predicates.toTypedArray())
-            }, PageRequest.of(page, size, SORT)
+            }, PageRequest.of(page, size, sort)
         )
     }
 
@@ -108,14 +113,7 @@ class UserService(
                     criteriaBuilder.like(root.get("username"), pattern),
                     criteriaBuilder.like(root.get("name"), pattern)
                 )
-            }, PageRequest.of(page, size, SORT)
+            }, PageRequest.of(page, size, sort)
         )
-    }
-
-    companion object {
-        /**
-         * 查询时的排序依据。
-         */
-        private val SORT: Sort = Sort.by(Sort.Direction.ASC, "name", "role")
     }
 }

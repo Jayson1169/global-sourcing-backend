@@ -22,6 +22,11 @@ class ExpressOrderService(
 ) {
 
     /**
+     * 查询时的排序依据。
+     */
+    private val sort: Sort = Sort.by(Sort.Direction.DESC, "updateTime")
+
+    /**
      * 新增物流单，物流单状态为初始状态 [Status.CREATED]。
      */
     fun insert(expressOrder: ExpressOrder): ExpressOrder {
@@ -35,8 +40,7 @@ class ExpressOrderService(
     }
 
     /**
-     * 将物流单发出，物流单状态由 [Status.CREATED]
-     * 更新为 [Status.DELIVERED]。
+     * 将物流单发出，物流单状态由 [Status.CREATED] 更新为 [Status.DELIVERED]。
      */
     fun deliver(deliverer: User, id: Long, expressCompany: String, expressNumber: String): ExpressOrder {
         val expressOrder = commonService.findExpressOrderAndCheckStatus(id, Status.CREATED)
@@ -105,14 +109,7 @@ class ExpressOrderService(
                 status?.let { predicates.add(criteriaBuilder.equal(root.get<Status>("status"), it)) }
 
                 criteriaBuilder.and(*predicates.toTypedArray())
-            }, PageRequest.of(page, size, SORT)
+            }, PageRequest.of(page, size, sort)
         )
-    }
-
-    companion object {
-        /**
-         * 查询时的排序依据。
-         */
-        private val SORT: Sort = Sort.by(Sort.Direction.DESC, "updateTime")
     }
 }

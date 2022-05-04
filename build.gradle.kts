@@ -34,7 +34,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
     implementation("org.apache.commons:commons-lang3:3.12.0")
-    implementation("com.vladmihalcea:hibernate-types-52:2.15.1")
+    implementation("com.vladmihalcea:hibernate-types-52:2.16.1")
 
     runtimeOnly("mysql:mysql-connector-java")
     testImplementation("org.springframework.boot:spring-boot-starter-test")

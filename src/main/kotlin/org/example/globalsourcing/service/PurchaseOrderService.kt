@@ -23,6 +23,11 @@ class PurchaseOrderService(
 ) {
 
     /**
+     * 查询时的排序依据。
+     */
+    private val sort: Sort = Sort.by(Sort.Direction.DESC, "updateTime")
+
+    /**
      * 依据商品ID [productId] 和采购数量 [quantity] 创建采购单。
      */
     fun create(productId: Long, quantity: Int): PurchaseOrder {
@@ -167,7 +172,7 @@ class PurchaseOrderService(
                 status?.let { predicates.add(criteriaBuilder.equal(root.get<Status>("status"), it)) }
 
                 criteriaBuilder.and(*predicates.toTypedArray())
-            }, PageRequest.of(page, size, SORT)
+            }, PageRequest.of(page, size, sort)
         )
     }
 
@@ -185,12 +190,5 @@ class PurchaseOrderService(
     fun getInvoice(id: Long): String? {
         val purchaseOrder = commonService.findPurchaseOrderAndCheckStatus(id)
         return purchaseOrder.invoice ?: throw ServiceException("ID为'${id}'的采购单的发票尚未上传！")
-    }
-
-    companion object {
-        /**
-         * 查询时的排序依据。
-         */
-        private val SORT: Sort = Sort.by(Sort.Direction.DESC, "updateTime")
     }
 }

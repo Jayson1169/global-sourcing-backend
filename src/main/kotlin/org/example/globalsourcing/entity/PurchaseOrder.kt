@@ -144,17 +144,16 @@ class PurchaseOrder : BaseEntity() {
     /**
      * 计算采购单总价。
      */
-    fun totalPrice(): Int = purchasePrice * quantity
+    val totalPrice: Int
+        get() = purchasePrice * quantity
 
     companion object {
         /**
          * 依据商品 [product] 和采购数量 [quantity] 创建采购单。
          */
-        fun of(product: Product, quantity: Int): PurchaseOrder {
-            val purchaseOrder = PurchaseOrder()
-            purchaseOrder.product = product
-            purchaseOrder.quantity = quantity
-            return purchaseOrder
+        fun of(product: Product, quantity: Int): PurchaseOrder = PurchaseOrder().apply {
+            this.product = product
+            this.quantity = quantity
         }
     }
 }
