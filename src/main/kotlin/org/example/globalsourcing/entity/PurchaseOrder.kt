@@ -19,8 +19,7 @@ class PurchaseOrder : BaseEntity() {
     var buyer: User? = null
 
     /**
-     * 采购单状态，可选值参考枚举类[Status]，
-     * 默认值[Status.CREATED]。
+     * 采购单状态，可选值参考枚举类[Status]，默认值[Status.CREATED]。
      */
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -80,6 +79,7 @@ class PurchaseOrder : BaseEntity() {
      */
     @PositiveOrZero(message = "已采购数量不能为负")
     @Column(nullable = false)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     var purchasedQuantity: Int = 0
 
     /**
@@ -105,6 +105,12 @@ class PurchaseOrder : BaseEntity() {
     @JoinColumn
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     var warehouseKeeper: User? = null
+
+    /**
+     * 计算采购单总价。
+     */
+    val totalPrice: Int
+        get() = purchasePrice * quantity
 
     /**
      * 采购单状态枚举类。
@@ -140,12 +146,6 @@ class PurchaseOrder : BaseEntity() {
          */
         WAREHOUSED;
     }
-
-    /**
-     * 计算采购单总价。
-     */
-    val totalPrice: Int
-        get() = purchasePrice * quantity
 
     companion object {
         /**

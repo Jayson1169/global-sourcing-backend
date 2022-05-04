@@ -1,10 +1,12 @@
 package org.example.globalsourcing.entity
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import org.example.globalsourcing.util.MEDIUMTEXT_MAX_SIZE
 import org.example.globalsourcing.util.VARCHAR_MAX_SIZE
 import javax.persistence.*
 import javax.validation.Valid
 import javax.validation.constraints.NotBlank
+import javax.validation.constraints.PositiveOrZero
 import javax.validation.constraints.Size
 
 /**
@@ -29,11 +31,35 @@ class SaleOrder : BaseEntity() {
     var address: String? = null
 
     /**
+     * 销售单状态，可选值参考枚举类 [Status]，默认值 [Status.CREATED]。
+     */
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    var status: Status = Status.CREATED
+
+    /**
      * 备注信息。
      */
     @Size(max = VARCHAR_MAX_SIZE, message = "备注信息不能超过{max}个字符")
     @Column
     var remark: String? = null
+
+    /**
+     * 已付金额。
+     */
+    @PositiveOrZero(message = "已付金额不能为负")
+    @Column(nullable = false)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    var paidAmount: Int = 0
+
+    /**
+     * 付款凭证（图片），base64格式存储。
+     */
+    @Size(max = MEDIUMTEXT_MAX_SIZE, message = "图片经过编码后不能超过{max}字节")
+    @Column(columnDefinition = "mediumtext")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    var certificate: String? = null
 
     /**
      * 销售单项目。
@@ -43,21 +69,28 @@ class SaleOrder : BaseEntity() {
     val items: MutableList<SaleOrderItem> = mutableListOf()
 
     /**
-     * 是否已完成发货。
-     */
-    val delivered: Boolean
-        get() = items.all { it.delivered }
-
-    /**
-     * 销售单商品总销售价。
+     * 计算销售单商品总价。
      */
     val totalPrice: Int
         get() = items.sumOf { it.quantity * it.salePrice }
 
-    override fun toString(): String = "SaleOrder(" +
-            "salesperson=$salesperson, " +
-            "address=$address, " +
-            "remark=$remark, " +
-            "delivered=$delivered" +
-            ")"
+    /**
+     * 销售单状态枚举类。
+     */
+    enum class Status {
+        /**
+         * 销售单创建。
+         */
+        CREATED,
+
+        /**
+         * 销售单已付款（用户完成支付）。
+         */
+        PAID,
+
+        /**
+         * 销售单已完成发货（转运员将销售单货物发出）。
+         */
+        DELIVERED;
+    }
 }

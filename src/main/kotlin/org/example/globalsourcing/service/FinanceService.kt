@@ -1,7 +1,8 @@
 package org.example.globalsourcing.service
 
 import org.example.globalsourcing.entity.Finance
-import org.example.globalsourcing.entity.PurchaseOrder.Status
+import org.example.globalsourcing.entity.PurchaseOrder
+import org.example.globalsourcing.entity.SaleOrder
 import org.example.globalsourcing.repository.PurchaseOrderRepository
 import org.example.globalsourcing.repository.SaleOrderRepository
 import org.springframework.stereotype.Service
@@ -36,13 +37,13 @@ class FinanceService(
         val saleOrders = saleOrderRepository.findAll { root, _, criteriaBuilder ->
             criteriaBuilder.and(
                 criteriaBuilder.between(root.get("updateTime"), startTime, endTime),
-                criteriaBuilder.isTrue(root.get("delivered"))
+                criteriaBuilder.equal(root.get<SaleOrder.Status>("status"), SaleOrder.Status.DELIVERED)
             )
         }
         val purchaseOrders = purchaseOrderRepository.findAll { root, _, criteriaBuilder ->
             criteriaBuilder.and(
                 criteriaBuilder.between(root.get("updateTime"), startTime, endTime),
-                criteriaBuilder.equal(root.get<Status>("status"), Status.WAREHOUSED)
+                criteriaBuilder.equal(root.get<PurchaseOrder.Status>("status"), PurchaseOrder.Status.WAREHOUSED)
             )
         }
 

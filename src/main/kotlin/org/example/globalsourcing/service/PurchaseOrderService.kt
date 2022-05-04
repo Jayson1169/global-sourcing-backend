@@ -36,8 +36,7 @@ class PurchaseOrderService(
     }
 
     /**
-     * 管理员分配采购单给采购员，采购单状态从 [Status.CREATED]
-     * 更新为 [Status.READY]。
+     * 管理员分配采购单给采购员，采购单状态从 [Status.CREATED] 更新为 [Status.READY]。
      */
     fun assign(id: Long, buyerId: Long, quantity: Int): PurchaseOrder {
         val purchaseOrder = commonService.findPurchaseOrderAndCheckStatus(id, Status.CREATED)
@@ -51,8 +50,7 @@ class PurchaseOrderService(
 
     /**
      * 采购员上传采购单信息，交给管理员核验，
-     * 采购单状态从 [Status.READY] 或 [Status.REJECTED] 更新为
-     * [Status.PENDING]。
+     * 采购单状态从 [Status.READY] 或 [Status.REJECTED] 更新为 [Status.PENDING]。
      */
     fun uploadPurchaseInfo(purchaseOrder: PurchaseOrder): PurchaseOrder {
         val id = purchaseOrder.id
@@ -76,8 +74,7 @@ class PurchaseOrderService(
     }
 
     /**
-     * 管理员核验采购单，采购单状态从 [Status.PENDING]
-     * 更新为 [Status.CONFIRMED]。
+     * 管理员核验采购单，采购单状态从 [Status.PENDING] 更新为 [Status.CONFIRMED]。
      */
     fun assignToWarehouseKeeper(id: Long, warehouseKeeperId: Long): PurchaseOrder {
         val purchaseOrder = commonService.findPurchaseOrderAndCheckStatus(id, Status.PENDING)
@@ -90,8 +87,7 @@ class PurchaseOrderService(
     }
 
     /**
-     * 管理员驳回采购单，采购单状态从 [Status.PENDING]
-     * 更新为 [Status.REJECTED]。
+     * 管理员驳回采购单，采购单状态从 [Status.PENDING] 更新为 [Status.REJECTED]。
      */
     fun reject(id: Long, rejectReason: String): PurchaseOrder {
         val purchaseOrder = commonService.findPurchaseOrderAndCheckStatus(id, Status.PENDING)
@@ -102,8 +98,7 @@ class PurchaseOrderService(
     }
 
     /**
-     * 采购单商品入库，入库数量足够时采购单由 [Status.CONFIRMED]
-     * 更新为 [Status.WAREHOUSED]，
+     * 采购单商品入库，入库数量足够时采购单由 [Status.CONFIRMED] 更新为 [Status.WAREHOUSED]，
      * 否则采购单状态维持在 [Status.CONFIRMED]。
      */
     fun putIntoWarehouse(warehouseKeeper: User, id: Long, quantity: Int): PurchaseOrder {
@@ -132,8 +127,7 @@ class PurchaseOrderService(
     }
 
     /**
-     * 在采购单入库数量不够的情况下完成强制完成入库，采购单状态从 [Status.CONFIRMED]
-     * 更新为 [Status.WAREHOUSED]。
+     * 在采购单入库数量不够的情况下完成强制完成入库，采购单状态从 [Status.CONFIRMED] 更新为 [Status.WAREHOUSED]。
      */
     fun forceFinishWarehousing(warehouseKeeper: User, id: Long): PurchaseOrder {
         val purchaseOrder = commonService.findPurchaseOrderAndCheckStatus(id, Status.CONFIRMED)
@@ -146,8 +140,7 @@ class PurchaseOrderService(
     }
 
     /**
-     * 依据ID删除采购单，需要采购单处于未采购状态，
-     * 即 [Status.CREATED] 或 [Status.READY]。
+     * 依据ID删除采购单，需要采购单处于未采购状态，即 [Status.CREATED] 或 [Status.READY]。
      */
     fun delete(id: Long) {
         val purchaseOrder = purchaseOrderRepository.findById(id).orElse(null) ?: return

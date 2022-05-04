@@ -1,6 +1,7 @@
 package org.example.globalsourcing.controller
 
 import org.example.globalsourcing.entity.SaleOrder
+import org.example.globalsourcing.entity.SaleOrder.Status
 import org.example.globalsourcing.entity.SaleOrderItem
 import org.example.globalsourcing.entity.User
 import org.example.globalsourcing.service.SaleOrderService
@@ -30,6 +31,12 @@ class SaleOrderController(private val saleOrderService: SaleOrderService) {
     ): ResponseData<SaleOrder> {
         saleOrder.salesperson = authentication.principal as User
         return ResponseData.success(saleOrderService.insert(saleOrder))
+    }
+
+    @PutMapping("/uploadPayInfo")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SALESPERSON')")
+    fun uploadPayInfo(@Validated(Update::class) @RequestBody saleOrder: SaleOrder): ResponseData<SaleOrder> {
+        return ResponseData.success(saleOrderService.uploadPayInfo(saleOrder))
     }
 
     @PutMapping("/update")
@@ -99,19 +106,19 @@ class SaleOrderController(private val saleOrderService: SaleOrderService) {
         @NotBlank(message = "物流单号不能为空")
         @Pattern(regexp = EXPRESS_NUMBER_PATTERN, message = "物流单号格式错误") expressNumber: String?
     ): ResponseData<SaleOrderItem> {
-        val saleOrder = saleOrderService.deliverItem(itemId!!, quantity!!, expressCompany!!, expressNumber!!)
-        return ResponseData.success(saleOrder)
+        val saleOrderItem = saleOrderService.deliverItem(itemId!!, quantity!!, expressCompany!!, expressNumber!!)
+        return ResponseData.success(saleOrderItem)
     }
 
     @GetMapping("/findAll")
     @PreAuthorize("hasAnyRole('ADMIN', 'TRANSPORTER', 'SALESPERSON')")
     fun findAll(
         @RequestParam(required = false) salespersonId: Long?,
-        @RequestParam(required = false) delivered: Boolean?,
+        @RequestParam(required = false) status: Status?,
         @RequestParam(defaultValue = "0") page: Int,
         @RequestParam(defaultValue = DEFAULT_PAGE_SIZE.toString()) size: Int
     ): ResponseData<Page<SaleOrder>> {
-        val saleOrders = saleOrderService.findAll(salespersonId, delivered, page, size)
+        val saleOrders = saleOrderService.findAll(salespersonId, status, page, size)
         return ResponseData.success(saleOrders)
     }
 

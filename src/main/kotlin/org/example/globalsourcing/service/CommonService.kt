@@ -37,10 +37,12 @@ class CommonService(
             .orElseThrow { ServiceException("ID为'${id}'的采购单不存在或状态异常！") }
 
     /**
-     * 依据ID查找指定销售单。
+     * 依据ID查找指定销售单并核验状态是否在预期状态列表中。
      */
-    fun findSaleOrder(id: Long): SaleOrder =
-        saleOrderRepository.findById(id).orElseThrow { ServiceException("ID为'${id}'的销售单不存在！") }
+    fun findSaleOrderAndCheckStatus(id: Long, vararg statuses: SaleOrder.Status): SaleOrder =
+        saleOrderRepository.findById(id)
+            .filter { statuses.isEmpty() || ArrayUtils.contains(statuses, it.status) }
+            .orElseThrow { ServiceException("ID为'${id}'的销售单不存在或状态异常！") }
 
     /**
      * 依据ID查找指定销售单项目。

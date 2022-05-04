@@ -7,7 +7,7 @@ GET {{url_prefix}}/purchaseOrder/findAll?buyerId=23
 Accept: application/json
 ###
 
-GET {{url_prefix}}/purchaseOrder/findAllByWarehouseKeeper?warehouseKeeperId=36
+GET {{url_prefix}}/purchaseOrder/findAll?warehouseKeeperId=36
 Accept: application/json
 
 ###
