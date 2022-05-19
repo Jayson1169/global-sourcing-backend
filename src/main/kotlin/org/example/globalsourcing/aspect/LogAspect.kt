@@ -25,8 +25,7 @@ class LogAspect {
         val ip = request.remoteAddr
         val method = joinPoint.signature.name
         val args = joinPoint.args.toList()
-        val log = RequestLog(url, ip, method, args)
-        logger.info("Request: {}", log)
+        logger.info("Request: {}", RequestLog(url, ip, method, args))
     }
 
     @AfterReturning(returning = "result", pointcut = "execute()")

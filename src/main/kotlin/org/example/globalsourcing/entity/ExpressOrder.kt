@@ -53,6 +53,13 @@ class ExpressOrder : BaseEntity() {
     var receiver: User? = null
 
     /**
+     * 备注信息。
+     */
+    @Size(max = VARCHAR_MAX_SIZE, message = "备注信息不能超过{max}个字符")
+    @Column
+    var remark: String? = null
+
+    /**
      * 物流单项目。
      */
     @OneToMany(mappedBy = "expressOrder", cascade = [CascadeType.ALL], orphanRemoval = true)
@@ -84,5 +91,6 @@ class ExpressOrder : BaseEntity() {
             "status=$status, " +
             "deliverer=$deliverer, " +
             "receiver=$receiver, " +
+            "remark=$remark" +
             ")"
 }

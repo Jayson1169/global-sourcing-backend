@@ -138,7 +138,7 @@ class SaleOrderService(
     }
 
     fun deliverItem(itemId: Long, quantity: Int, expressCompany: String, expressNumber: String): SaleOrderItem {
-        var item: SaleOrderItem = saleOrderItemRepository.findById(itemId)
+        val item = saleOrderItemRepository.findById(itemId)
             .filter { !it.delivered }
             .orElseThrow { ServiceException("id为'${itemId}'的销售单项目不存在或已完成发货！") }
 
@@ -158,7 +158,7 @@ class SaleOrderService(
 
         item.deliveredQuantity += quantity
         item.expresses.add(Express(expressCompany, expressNumber))
-        item = saleOrderItemRepository.save(item)
+        saleOrderItemRepository.save(item)
 
         val saleOrder = item.saleOrder
         if (saleOrder.items.all { item.delivered }) {

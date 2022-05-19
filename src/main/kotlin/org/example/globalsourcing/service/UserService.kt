@@ -29,7 +29,7 @@ class UserService(
     override fun loadUserByUsername(username: String): UserDetails {
         val user = userRepository.findByUsername(username) ?: throw UsernameNotFoundException("用户'${username}'不存在！")
         val authorities = user.authorities
-        authorities.add(SimpleGrantedAuthority("ROLE_" + user.role.toString()))
+        authorities.add(SimpleGrantedAuthority("ROLE_${user.role.toString()}"))
         authorities.add(SimpleGrantedAuthority("ROLE_USER"))
         return user
     }

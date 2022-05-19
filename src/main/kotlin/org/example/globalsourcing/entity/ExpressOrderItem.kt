@@ -37,4 +37,10 @@ class ExpressOrderItem : BaseEntity() {
     @PositiveOrZero(message = "收货数量不能为负")
     @Column(nullable = false)
     var receivedQuantity: Int = 0
+
+    override fun toString(): String = "ExpressOrderItem(" +
+            "product=$product, " +
+            "quantity=$quantity, " +
+            "receivedQuantity=$receivedQuantity" +
+            ")"
 }
