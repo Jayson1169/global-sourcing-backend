@@ -77,7 +77,7 @@ class SaleOrderService(
      * 依据ID删除销售单。
      */
     fun delete(id: Long) {
-        saleOrderRepository.deleteById(id)
+        saleOrderRepository.findById(id).ifPresent { saleOrderRepository.delete(it) }
     }
 
     /**
@@ -102,7 +102,7 @@ class SaleOrderService(
      * 删除单个销售单项目。
      */
     fun deleteItem(itemId: Long) {
-        saleOrderItemRepository.deleteById(itemId)
+        saleOrderItemRepository.findById(itemId).ifPresent { saleOrderItemRepository.delete(it) }
     }
 
     /**

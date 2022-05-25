@@ -156,17 +156,4 @@ class PurchaseOrder : BaseEntity() {
             this.quantity = quantity
         }
     }
-
-    override fun toString(): String = "PurchaseOrder(" +
-            "buyer=$buyer, " +
-            "status=$status, " +
-            "invoiceDate=$invoiceDate, " +
-            "product=$product, " +
-            "purchasePrice=$purchasePrice, " +
-            "quantity=$quantity, " +
-            "purchasedQuantity=$purchasedQuantity, " +
-            "warehousedQuantity=$warehousedQuantity, " +
-            "rejectReason=$rejectReason, " +
-            "warehouseKeeper=$warehouseKeeper" +
-            ")"
 }

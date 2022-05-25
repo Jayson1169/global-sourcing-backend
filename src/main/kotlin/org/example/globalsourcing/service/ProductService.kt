@@ -52,7 +52,7 @@ class ProductService(
      * 依据ID删除商品基本信息。
      */
     fun delete(id: Long) {
-        productRepository.deleteById(id)
+        productRepository.findById(id).ifPresent { productRepository.delete(it) }
     }
 
     /**

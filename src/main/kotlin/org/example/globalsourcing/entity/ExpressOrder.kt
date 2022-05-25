@@ -84,13 +84,4 @@ class ExpressOrder : BaseEntity() {
          */
         RECEIVED;
     }
-
-    override fun toString(): String = "ExpressOrder(" +
-            "expressCompany=$expressCompany, " +
-            "expressNumber=$expressNumber, " +
-            "status=$status, " +
-            "deliverer=$deliverer, " +
-            "receiver=$receiver, " +
-            "remark=$remark" +
-            ")"
 }

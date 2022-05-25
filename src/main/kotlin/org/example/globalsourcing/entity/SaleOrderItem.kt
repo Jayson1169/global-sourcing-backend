@@ -66,13 +66,4 @@ class SaleOrderItem : BaseEntity() {
         get() = quantity == deliveredQuantity
 
     data class Express(val expressCompany: String, val expressNumber: String)
-
-    override fun toString(): String = "SaleOrderItem(" +
-            "saleOrder=$saleOrder, " +
-            "product=$product, " +
-            "salePrice=$salePrice, " +
-            "quantity=$quantity, " +
-            "deliveredQuantity=$deliveredQuantity, " +
-            "delivered=$delivered" +
-            ")"
 }

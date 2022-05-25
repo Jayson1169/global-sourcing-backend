@@ -103,9 +103,9 @@ class PurchaseOrderController(private val purchaseOrderService: PurchaseOrderSer
 
     @DeleteMapping("/delete")
     @PreAuthorize("hasRole('ADMIN')")
-    fun delete(@NotNull(message = "ID不能为空") id: Long?): ResponseData<PurchaseOrder> {
+    fun delete(@NotNull(message = "ID不能为空") id: Long?): ResponseData<Nothing> {
         purchaseOrderService.delete(id!!)
-        return ResponseData.success(null)
+        return ResponseData.success()
     }
 
     @GetMapping("/findAll")

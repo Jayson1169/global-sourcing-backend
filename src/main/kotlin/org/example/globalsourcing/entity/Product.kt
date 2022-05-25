@@ -83,15 +83,4 @@ class Product : BaseEntity() {
     @Size(max = VARCHAR_MAX_SIZE, message = "备注信息长度不能超过{max}个字符")
     @Column
     var remark: String? = null
-
-    override fun toString(): String = "Product(" +
-            "name=$name, " +
-            "barcode=$barcode, " +
-            "brand=$brand, " +
-            "specification=$specification, " +
-            "inventory=$inventory, " +
-            "price=$price, " +
-            "customsInfo=$customsInfo, " +
-            "remark=$remark" +
-            ")"
 }

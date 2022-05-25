@@ -35,15 +35,4 @@ class CustomsInfo : BaseEntity() {
     @PositiveOrZero(message = "unitPrice不能为负")
     @Column
     var unitPrice: Int? = null
-
-    override fun toString(): String {
-        return "CustomsInfo(" +
-                "hsCode=$hsCode, " +
-                "materialBeschaffenheit=$materialBeschaffenheit, " +
-                "brandArticleNo=$brandArticleNo, " +
-                "brand=$brand, " +
-                "articleName=$articleName, " +
-                "unitPrice=$unitPrice" +
-                ")"
-    }
 }

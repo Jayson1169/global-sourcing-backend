@@ -30,9 +30,9 @@ class ProductController(private val productService: ProductService) {
     }
 
     @DeleteMapping("/delete")
-    fun delete(id: @NotNull(message = "ID不能为空") Long?): ResponseData<Product> {
+    fun delete(id: @NotNull(message = "ID不能为空") Long?): ResponseData<Nothing> {
         productService.delete(id!!)
-        return ResponseData.success(null)
+        return ResponseData.success()
     }
 
     @GetMapping("/findAll")

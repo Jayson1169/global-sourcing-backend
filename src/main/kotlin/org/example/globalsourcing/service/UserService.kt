@@ -78,7 +78,7 @@ class UserService(
      * 依据ID删除用户信息。
      */
     fun delete(id: Long) {
-        userRepository.deleteById(id)
+        userRepository.findById(id).ifPresent { userRepository.delete(it) }
     }
 
     /**

@@ -29,10 +29,4 @@ class Inventory : BaseEntity() {
     @PositiveOrZero(message = "商品库存不能为负")
     @Column(nullable = false)
     var midwayInventory: Int = 0
-
-    override fun toString(): String = "Inventory(" +
-            "warehouseInventory=$warehouseInventory, " +
-            "hubInventory=$hubInventory, " +
-            "midwayInventory=$midwayInventory" +
-            ")"
 }

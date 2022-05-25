@@ -48,4 +48,7 @@ abstract class BaseEntity {
     override fun hashCode(): Int {
         return Objects.hash(this::class, id)
     }
+
+    override fun toString(): String =
+        "${this::class.simpleName}(id=$id)"
 }

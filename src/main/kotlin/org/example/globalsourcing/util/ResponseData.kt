@@ -7,6 +7,11 @@ data class ResponseData<out T>(
 ) {
     companion object {
         /**
+         * 构造请求成功时的空响应数据。
+         */
+        fun success(): ResponseData<Nothing> = ResponseData(200, "成功", null)
+
+        /**
          * 构造请求成功时的响应数据。
          */
         fun <T> success(data: T?): ResponseData<T> = ResponseData(200, "成功", data)

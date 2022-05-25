@@ -47,9 +47,9 @@ class SaleOrderController(private val saleOrderService: SaleOrderService) {
 
     @DeleteMapping("/delete")
     @PreAuthorize("hasAnyRole('ADMIN', 'SALESPERSON')")
-    fun delete(@NotNull(message = "ID不能为空") id: Long?): ResponseData<SaleOrder?>? {
+    fun delete(@NotNull(message = "ID不能为空") id: Long?): ResponseData<Nothing> {
         saleOrderService.delete(id!!)
-        return ResponseData.success(null)
+        return ResponseData.success()
     }
 
     @PostMapping("/insertItem")
@@ -70,9 +70,9 @@ class SaleOrderController(private val saleOrderService: SaleOrderService) {
 
     @DeleteMapping("/deleteItem")
     @PreAuthorize("hasAnyRole('ADMIN', 'SALESPERSON')")
-    fun deleteItem(@NotNull(message = "ID不能为空") itemId: Long?): ResponseData<SaleOrder> {
+    fun deleteItem(@NotNull(message = "ID不能为空") itemId: Long?): ResponseData<Nothing> {
         saleOrderService.deleteItem(itemId!!)
-        return ResponseData.success(null)
+        return ResponseData.success()
     }
 
     @GetMapping("/isSaleOrderDeliverable")

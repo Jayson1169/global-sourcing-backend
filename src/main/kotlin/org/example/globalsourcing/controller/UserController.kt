@@ -42,9 +42,9 @@ class UserController(private val userService: UserService) {
     }
 
     @DeleteMapping("/delete")
-    fun delete(@NotNull(message = "ID不能为空") id: Long?): ResponseData<User> {
+    fun delete(@NotNull(message = "ID不能为空") id: Long?): ResponseData<Nothing> {
         userService.delete(id!!)
-        return ResponseData.success(null)
+        return ResponseData.success()
     }
 
     @GetMapping("/findAll")

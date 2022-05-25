@@ -96,12 +96,4 @@ class User : BaseEntity(), UserDetails {
 
     @JsonIgnore
     override fun isEnabled(): Boolean = true
-
-    override fun toString(): String = "User(" +
-            "username=$username, " +
-            "password=$password, " +
-            "name=$name, " +
-            "phoneNumber=$phoneNumber, " +
-            "role=$role" +
-            ")"
 }

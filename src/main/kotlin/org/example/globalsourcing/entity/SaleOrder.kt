@@ -93,12 +93,4 @@ class SaleOrder : BaseEntity() {
          */
         DELIVERED;
     }
-
-    override fun toString(): String = "SaleOrder(" +
-            "salesperson=$salesperson, " +
-            "address=$address, " +
-            "status=$status, " +
-            "remark=$remark, " +
-            "paidAmount=$paidAmount" +
-            ")"
 }
