@@ -11,12 +11,10 @@ import org.springframework.beans.support.PagedListHolder.DEFAULT_PAGE_SIZE
 import org.springframework.data.domain.Page
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.Authentication
+import org.springframework.util.Assert
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
-import javax.validation.constraints.NotBlank
-import javax.validation.constraints.NotNull
-import javax.validation.constraints.Positive
-import javax.validation.constraints.Size
+import javax.validation.constraints.*
 
 @RestController
 @RequestMapping("/purchaseOrder")
@@ -32,6 +30,19 @@ class PurchaseOrderController(private val purchaseOrderService: PurchaseOrderSer
     ): ResponseData<PurchaseOrder> {
         val purchaseOrder = purchaseOrderService.create(productId!!, quantity!!)
         return ResponseData.success(purchaseOrder)
+    }
+
+    @PostMapping("/createBatch")
+    @PreAuthorize("hasAnyRole('ADMIN', 'BUYER', 'SALESPERSON')")
+    fun createBatch(
+        @NotEmpty(message = "ID列表不能为空") productIds: Array<Long>,
+        @NotEmpty(message = "采购数量列表不能为空") quantities: Array<Int>
+    ): ResponseData<List<PurchaseOrder>> {
+        Assert.isTrue(productIds.all { it > 0 }, "ID列表中含有非法值！")
+        Assert.isTrue(quantities.all { it > 0 }, "采购数量列表中含有非法值！")
+
+        val purchaseOrders = purchaseOrderService.createBatch(productIds, quantities)
+        return ResponseData.success(purchaseOrders)
     }
 
     @PutMapping("/assign")
@@ -109,7 +120,7 @@ class PurchaseOrderController(private val purchaseOrderService: PurchaseOrderSer
     }
 
     @GetMapping("/findAll")
-    @PreAuthorize("hasAnyRole('ADMIN', 'BUYER', 'WAREHOUSE_KEEPER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'BUYER', 'WAREHOUSE_KEEPER', 'SALESPERSON')")
     fun findAll(
         @RequestParam(required = false) buyerId: Long?,
         @RequestParam(required = false) warehouseKeeperId: Long?,
@@ -122,14 +133,14 @@ class PurchaseOrderController(private val purchaseOrderService: PurchaseOrderSer
     }
 
     @GetMapping("/getPhoto")
-    @PreAuthorize("hasAnyRole('ADMIN', 'BUYER', 'WAREHOUSE_KEEPER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'BUYER', 'WAREHOUSE_KEEPER', 'SALESPERSON')")
     fun getPhoto(@NotNull(message = "ID不能为空") id: Long?): ResponseData<String> {
         val photo = purchaseOrderService.getPhoto(id!!)
         return ResponseData.success(photo)
     }
 
     @GetMapping("/getInvoice")
-    @PreAuthorize("hasAnyRole('ADMIN', 'BUYER', 'WAREHOUSE_KEEPER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'BUYER', 'WAREHOUSE_KEEPER', 'SALESPERSON')")
     fun getInvoice(id: @NotNull(message = "ID不能为空") Long?): ResponseData<String> {
         val invoice = purchaseOrderService.getInvoice(id!!)
         return ResponseData.success(invoice)

@@ -1,6 +1,5 @@
 package org.example.globalsourcing.service
 
-import org.example.globalsourcing.entity.Product
 import org.example.globalsourcing.entity.PurchaseOrder
 import org.example.globalsourcing.entity.PurchaseOrder.Status
 import org.example.globalsourcing.entity.User
@@ -31,8 +30,23 @@ class PurchaseOrderService(
      * 依据商品ID [productId] 和采购数量 [quantity] 创建采购单。
      */
     fun create(productId: Long, quantity: Int): PurchaseOrder {
-        val product: Product = commonService.findProduct(productId)
+        val product = commonService.findProduct(productId)
         return purchaseOrderRepository.save(PurchaseOrder.of(product, quantity))
+    }
+
+    /**
+     * 依据商品ID [productIds] 和采购数量 [quantities] 批量创建采购单，需要一一对应。
+     */
+    fun createBatch(productIds: Array<Long>, quantities: Array<Int>): List<PurchaseOrder> {
+        val purchaseOrders = mutableListOf<PurchaseOrder>()
+        for (i in productIds.indices) {
+            val productId = productIds[i]
+            val quantity = quantities[i]
+            val product = commonService.findProduct(productId)
+            purchaseOrders.add(PurchaseOrder.of(product, quantity))
+        }
+
+        return purchaseOrderRepository.saveAll(purchaseOrders)
     }
 
     /**

@@ -79,7 +79,6 @@ class PurchaseOrder : BaseEntity() {
      */
     @PositiveOrZero(message = "已采购数量不能为负")
     @Column(nullable = false)
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     var purchasedQuantity: Int = 0
 
     /**

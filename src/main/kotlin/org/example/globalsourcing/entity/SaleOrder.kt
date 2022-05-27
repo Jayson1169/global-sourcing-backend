@@ -50,7 +50,6 @@ class SaleOrder : BaseEntity() {
      */
     @PositiveOrZero(message = "已付金额不能为负")
     @Column(nullable = false)
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     var paidAmount: Int = 0
 
     /**

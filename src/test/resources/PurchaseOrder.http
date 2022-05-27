@@ -12,6 +12,11 @@ Accept: application/json
 
 ###
 
+POST {{url_prefix}}/purchaseOrder/createBatch?productIds=1,2&quantities=3,-1
+Accept: application/json
+
+###
+
 PUT {{url_prefix}}/purchaseOrder/assign?purchaseOrderId=3&buyerId=35&quantity=4
 Accept: application/json
 
