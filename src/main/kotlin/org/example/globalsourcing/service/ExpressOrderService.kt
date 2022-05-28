@@ -100,6 +100,14 @@ class ExpressOrderService(
     }
 
     /**
+     * 依据ID查找物流单。
+     */
+    fun findById(id: Long): ExpressOrder {
+        return expressOrderRepository.findById(id)
+            .orElseThrow { ServiceException("ID为'${id}'的物流单不存在！") }
+    }
+
+    /**
      * 查询物流单，可选条件：状态 [status]。
      */
     fun findAll(status: Status?, page: Int, size: Int): Page<ExpressOrder> {
@@ -110,6 +118,17 @@ class ExpressOrderService(
 
                 criteriaBuilder.and(*predicates.toTypedArray())
             }, PageRequest.of(page, size, sort)
+        )
+    }
+
+    /**
+     * 按备注信息搜索物流单。
+     */
+    fun search(keyword: String, page: Int, size: Int): Page<ExpressOrder> {
+        val pattern = "%${keyword}%"
+        return expressOrderRepository.findAll(
+            { root, _, criteriaBuilder -> criteriaBuilder.like(root.get("remark"), pattern) },
+            PageRequest.of(page, size, sort)
         )
     }
 }

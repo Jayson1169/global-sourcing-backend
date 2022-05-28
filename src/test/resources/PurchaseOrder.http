@@ -12,7 +12,7 @@ Accept: application/json
 
 ###
 
-POST {{url_prefix}}/purchaseOrder/createBatch?productIds=1,2&quantities=3,-1
+POST {{url_prefix}}/purchaseOrder/createBatch?productIds=1,2&quantities=3,3
 Accept: application/json
 
 ###

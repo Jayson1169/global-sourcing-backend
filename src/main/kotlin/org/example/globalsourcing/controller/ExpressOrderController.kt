@@ -56,6 +56,13 @@ class ExpressOrderController(private val expressOrderService: ExpressOrderServic
         return ResponseData.success(expressOrderService.receive(expressOrder))
     }
 
+    @GetMapping("/findById")
+    @PreAuthorize("hasAnyRole('ADMIN', 'WAREHOUSE_KEEPER', 'TRANSPORTER')")
+    fun findById(@NotNull(message = "ID不能为空") id: Long?): ResponseData<ExpressOrder> {
+        val expressOrder = expressOrderService.findById(id!!)
+        return ResponseData.success(expressOrder)
+    }
+
     @GetMapping("/findAll")
     @PreAuthorize("hasAnyRole('ADMIN', 'WAREHOUSE_KEEPER', 'TRANSPORTER')")
     fun findAll(
@@ -64,6 +71,17 @@ class ExpressOrderController(private val expressOrderService: ExpressOrderServic
         @RequestParam(defaultValue = DEFAULT_PAGE_SIZE.toString()) size: Int
     ): ResponseData<Page<ExpressOrder>> {
         val expressOrders = expressOrderService.findAll(status, page, size)
+        return ResponseData.success(expressOrders)
+    }
+
+    @GetMapping("/findAll")
+    @PreAuthorize("hasAnyRole('ADMIN', 'WAREHOUSE_KEEPER', 'TRANSPORTER')")
+    fun search(
+        @NotBlank(message = "关键词不能为空") keyword: String?,
+        @RequestParam(defaultValue = "0") page: Int,
+        @RequestParam(defaultValue = DEFAULT_PAGE_SIZE.toString()) size: Int
+    ): ResponseData<Page<ExpressOrder>> {
+        val expressOrders = expressOrderService.search(keyword!!, page, size)
         return ResponseData.success(expressOrders)
     }
 }

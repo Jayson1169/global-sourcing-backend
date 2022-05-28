@@ -165,6 +165,14 @@ class PurchaseOrderService(
     }
 
     /**
+     * 依据ID查找采购单。
+     */
+    fun findById(id: Long): PurchaseOrder {
+        return purchaseOrderRepository.findById(id)
+            .orElseThrow { ServiceException("ID为'${id}'的采购单不存在！") }
+    }
+
+    /**
      * 查询采购单，可选条件：采购员id [buyerId]、仓管员id [warehouseKeeperId]、状态 [status]。
      */
     fun findAll(buyerId: Long?, warehouseKeeperId: Long?, status: Status?, page: Int, size: Int): Page<PurchaseOrder> {
@@ -194,7 +202,7 @@ class PurchaseOrderService(
     /**
      * 依据ID获取发票。
      */
-    fun getInvoice(id: Long): String? {
+    fun getInvoice(id: Long): String {
         val purchaseOrder = commonService.findPurchaseOrderAndCheckStatus(id)
         return purchaseOrder.invoice ?: throw ServiceException("ID为'${id}'的采购单的发票尚未上传！")
     }

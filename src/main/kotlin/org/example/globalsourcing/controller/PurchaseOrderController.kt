@@ -40,6 +40,7 @@ class PurchaseOrderController(private val purchaseOrderService: PurchaseOrderSer
     ): ResponseData<List<PurchaseOrder>> {
         Assert.isTrue(productIds.all { it > 0 }, "ID列表中含有非法值！")
         Assert.isTrue(quantities.all { it > 0 }, "采购数量列表中含有非法值！")
+        Assert.isTrue(productIds.size == quantities.size, "ID列表与采购数量列表不对应！")
 
         val purchaseOrders = purchaseOrderService.createBatch(productIds, quantities)
         return ResponseData.success(purchaseOrders)
@@ -50,7 +51,8 @@ class PurchaseOrderController(private val purchaseOrderService: PurchaseOrderSer
     fun assign(
         @NotNull(message = "ID不能为空") id: Long?,
         @NotNull(message = "ID不能为空") buyerId: Long?,
-        @NotNull(message = "采购数量不能为空") @Positive(message = "采购数量不能小于1") quantity: Int?
+        @NotNull(message = "采购数量不能为空")
+        @Positive(message = "采购数量不能小于1") quantity: Int?
     ): ResponseData<PurchaseOrder> {
         val purchaseOrder = purchaseOrderService.assign(id!!, buyerId!!, quantity!!)
         return ResponseData.success(purchaseOrder)
@@ -73,7 +75,7 @@ class PurchaseOrderController(private val purchaseOrderService: PurchaseOrderSer
         @NotNull(message = "ID不能为空") id: Long?,
         @NotNull(message = "ID不能为空") warehouseKeeperId: Long?
     ): ResponseData<PurchaseOrder> {
-        val purchaseOrder: PurchaseOrder = purchaseOrderService.assignToWarehouseKeeper(id!!, warehouseKeeperId!!)
+        val purchaseOrder = purchaseOrderService.assignToWarehouseKeeper(id!!, warehouseKeeperId!!)
         return ResponseData.success(purchaseOrder)
     }
 
@@ -117,6 +119,13 @@ class PurchaseOrderController(private val purchaseOrderService: PurchaseOrderSer
     fun delete(@NotNull(message = "ID不能为空") id: Long?): ResponseData<Nothing> {
         purchaseOrderService.delete(id!!)
         return ResponseData.success()
+    }
+
+    @GetMapping("/findById")
+    @PreAuthorize("hasAnyRole('ADMIN', 'BUYER', 'WAREHOUSE_KEEPER', 'SALESPERSON')")
+    fun findById(@NotNull(message = "ID不能为空") id: Long?): ResponseData<PurchaseOrder> {
+        val purchaseOrder = purchaseOrderService.findById(id!!)
+        return ResponseData.success(purchaseOrder)
     }
 
     @GetMapping("/findAll")
