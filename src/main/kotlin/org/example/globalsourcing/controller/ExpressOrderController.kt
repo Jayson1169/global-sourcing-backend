@@ -74,7 +74,7 @@ class ExpressOrderController(private val expressOrderService: ExpressOrderServic
         return ResponseData.success(expressOrders)
     }
 
-    @GetMapping("/findAll")
+    @GetMapping("/search")
     @PreAuthorize("hasAnyRole('ADMIN', 'WAREHOUSE_KEEPER', 'TRANSPORTER')")
     fun search(
         @NotBlank(message = "关键词不能为空") keyword: String?,
